@@ -1,0 +1,78 @@
+
+aconnect:
+- UDP server support
+- TCP/UDP client
+- Cache class - stores ICacheable<T>
+
+ahttp:
+
+- Implement CGI/FastCGI handler (like handler_isapi - multiple mappings)
+- Implementent HttpResponseStream.Writer setup (write (HttpContext context, string_constptr data, size_t dataLength)) 
+	- default: DirectSocketWriter, can be used in modules to modify response
+- Implement found-targets cache in HttpServer (using aconnect::Cache)
+- "gzip/deflate" content encoding support, module (with zlib or boost::iostreams).
+- HTTP client (check like HttpHeaderReadCheck)
+- In-memory cache handler (module).
+- Administration part (Python scripts)
+
+handler_python:
+- Introduce Django support
+
+handler_isapi:
+- Investigate all TODO, implement all ServerSupportFunction variants
+      
+------------------------------------------------------------------------------------------------
+
+Versions history:
+
+<h3>Ver. 0.15 (2008-11-30)</h3>
+<ul>
+    <li>aconnect: Optimized worker threads pooling mechanism.</li>
+    <li>ahttp: Server messages loading from XML (localization).</li>
+    <li>ahttp: Impelemented handlers unloading mechanism (destroyHandlers).</li>
+    <li>ahttp: Implemented stable mutlithreaded Python handler version.</li>
+    <li>Many code refactorings performed (class members, namespaces, error handling).</li>
+    <li>Windows: Visual Solution solution converted to VS 2008.</li>
+</ul>
+   
+<h3>Ver. 0.16 (2008-12-10)</h3>
+<ul>
+    <li>ahttp: Defined handler ID and process request by correct dll - used in ISAPI handler, can be used in 
+        other handlers which can be linked to several extensions.</li>
+    <li>ahttp: VirtualPath renamed to InitialVirtualPath, MappedVirtualPath to VirtualPath to make them consistent.</li>
+    <li>ahttp: Added using aconnect::string and related types into ahttp namespace.</li>
+    <li>ahttp: [Windows] ISAPI extensions wrapper (handler), tested with PHP ISAPI extension.</li>
+    <li>ahttp: Implemented SERVER VARIABLES collection support in HttpContext.</li>
+    <li>ahttp: Implemented safe handlers unloading (::FreeLibrary/dlclose).</li>
+    <li>aconnect: Implemented ability to start server on defined IP, loaded from config (default value: 0.0.0.0 - INETADDR_ANY).</li>
+</ul>
+
+<h3>Ver. 0.17 (2008-12-27)</h3>
+<ul>
+    <li>aconnect: Implemented background file logger: collect messages to write and write them in background 
+        (avoid locking on file writing).</li>
+    <li>ahttp: Redeveloped handlers registration (<unregister>, <clear> tags added to simplify handlers management), 
+        added ignored extensions list in "*" mode (.js, .gif... - for MVC handlers).</li>
+    <li>ahttp: Impelemented case-insensitive request/response headers save/load (useful for handlers).</li>
+    <li>ahttp: [Windows] Implemented ASP.NET handler (Managed C++).</li>
+    <li>ahttp: Developed multiple extensions mapping for handler in register@ext and in handler@default-ext 
+        (list of ext linked to named handler), now ASP.NET MVC can be setup by following settings in <directory> element:
+	        &lt;handlers&gt;
+		        &lt;register name="handler_aspnet" ext="*"/&gt;
+		        &lt;unregister name="handler_aspnet" ext=".gif; .js; .css; .jpg; .png"/&gt;
+	        &lt;/handlers&gt; </li>
+    <li>ahttp: Added max-request-size setting for directory (deny requests with larger content-length, send 413 HTPP error).</li>
+</ul>
+
+<h3>Ver. 0.18 (2009-01-10)</h3>
+<ul>
+    <li>ahttp: Implemented "If-Modified-Since" header support.</li>
+    <li>ahttp: Added support of "Accept-Ranges" header used to partial content download.</li>
+</ul>
+
+<h3>Ver. 0.19 (2009-01-31)</h3>
+<ul>
+    <li>ahttp: Developed server modules support (like HttpModule in .NET: onRequestBegin, onRequestMapHandler
+        onResponsePreSendHeaders, onResponsePreSendContent, onResponseEnd).</li>
+    <li>ahttp: Basic authentication (module).</li>
+</ul>

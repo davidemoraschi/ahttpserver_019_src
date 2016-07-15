@@ -1,0 +1,112 @@
+--------------------------------------------------------------------------------------------------------------------
+
+Cache class
+[[
+        ICacheable<T> {
+            public:
+            virtual size_t getSize() = 0;
+            virtual void fill (T& item) = 0;
+            
+            time_t touched;
+            
+            
+        }
+        
+        Cache <K,T> { // K - key type
+            bool load (K key, T& item)
+            {
+                ++_readersCount;
+                atomic_counter_guard (_readersCount); // will do -- at exit
+                                
+                boost::mutex::scoped_lock lock(_updateMutex);
+                
+                ICacheable<typename T> elem = _storage.find (key);
+                if (elem)
+                {
+                   elem->touched = now();
+                   elem->fill (item);
+                   return true;
+                }
+	            
+                return false;
+            }
+            
+            
+            
+            
+            void add (const K& key, const ICacheable<typename T>& value)
+            {
+                boost::try_mutex::scoped_try_lock updateLock(_updateMutex);
+                
+                if (updateLock.try_lock()) {
+                    doAdd (key, value));
+                
+                } else if (_readersCount > _maxReadersCount) { // INVESTIGATE: update with boost::read_write_mutex
+                    updateLock.lock();
+                    doAdd (key, value));
+                }
+                
+            }
+            
+            void doAdd (const K& key, const ICacheable<typename T>& value) 
+            {
+                size_t size = value.getSize();
+                
+                if (_currentSize + size > _maxSize && _storage.size() > _minItemsCount)
+                {
+                    int removed = _itemsToRemoveCount, ndx = 0;
+                    
+                    while (removed < _itemsToRemoveCount) 
+                    {
+                         iter = _storage.find_if (_smallestTouchedTimes[ndx] == elem->touched); 
+                         if (iter != _storage.end())
+                         {
+                            removed += std::diff (iter, _storage.end());
+                            _storage.erase (iter, _storage.end());
+                         }
+                         else
+                         {
+                            throw runtime_error (...);
+                         }
+                         
+                         ndx++;
+                    }
+                }
+                else
+                {
+                    elem->touched = now();
+                    _storage.insert (make_pair (key, value));
+                    
+                    _currentSize += size;
+                    
+                    if (_smallestTouchedTimes.size() < _itemsToRemoveCount) {
+                        _smallestTouchedTimes.push_back(elem->touched);
+                        std::sort (_smallestTouchedTimes);
+                    } else {
+                        iter = _smallestTouchedTimes.find_if (n < elem->touched); 
+                        if (iter != _smallestTouchedTimes.end())
+                            *iter = elem->touched;
+                    }
+                }
+                
+            }
+            
+            typedef pair<K, ICacheable<typename T> > pair_type;
+            
+            protected:
+                std::map<K, ICacheable<typename T> > _storage;
+                
+                size_t _currentSize = 0;
+                size_t _maxSize = 1024 * 1024 * 1024;
+                std::vector _smallestTouchedTimes;
+                size_t _itemsToRemoveCount = 10;
+                size_t _minItemsCount = 50;
+                
+                size_t _maxReadersCount = 10;
+                
+                
+                boost::try_mutex _updateMutex;
+                boost::detail::atomic_count _readersCount;
+        } 
+]]
+

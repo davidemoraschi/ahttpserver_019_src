@@ -1,0 +1,27 @@
+﻿Build started 26/05/2010 10:21:20.
+     1>Project "I:\Visual Studio 2010\Projects\ahttpserver_019_src\aconnectlib\aconnectlib.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\aconnectlib.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHa /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt aconnect\aconnect.cpp
+         aconnect.cpp
+         Linking to lib file: libboost_thread-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_date_time-vc100-mt-gd-1_43.lib
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(1151,5): warning MSB8012: TargetPath(I:\Visual Studio 2010\Projects\ahttpserver_019_src\out\aconnectlib.lib) does not match the Library's OutputFile property value (I:\Visual Studio 2010\Projects\ahttpserver_019_src\out\aconnectlib-d.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(1153,5): warning MSB8012: TargetName(aconnectlib) does not match the Library's OutputFile property value (aconnectlib-d). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:"I:\Visual Studio 2010\Projects\ahttpserver_019_src\out\aconnectlib-d.lib" /NOLOGO Debug\aconnect.obj
+         Debug\error.obj
+         Debug\logger.obj
+         Debug\util.obj
+         Debug\util.network.obj
+         Debug\password_file_storage.obj
+         aconnectlib.vcxproj -> I:\Visual Studio 2010\Projects\ahttpserver_019_src\out\aconnectlib.lib
+       FinalizeBuildStatus:
+         Deleting file "Debug\aconnectlib.unsuccessfulbuild".
+         Touching "Debug\aconnectlib.lastbuildstate".
+     1>Done Building Project "I:\Visual Studio 2010\Projects\ahttpserver_019_src\aconnectlib\aconnectlib.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:29.46

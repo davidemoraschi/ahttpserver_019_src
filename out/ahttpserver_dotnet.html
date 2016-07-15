@@ -1,0 +1,596 @@
+<!--------------------------------------------------------------------------->
+<!--                           INTRODUCTION                                
+
+ The Code Project article submission template (HTML version)
+
+Using this template will help us post your article sooner. To use, just 
+follow the 3 easy steps below:
+ 
+     1. Fill in the article description details
+     2. Add links to your images and downloads
+     3. Include the main article text
+
+That's all there is to it! All formatting will be done by our submission
+scripts and style sheets. 
+
+-->
+<!--------------------------------------------------------------------------->
+<!--                        IGNORE THIS SECTION                            -->
+<html>
+<head>
+    <title>The Code Project</title>
+    <style>
+BODY, P, TD { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt }
+H2,H3,H4,H5 { color: #ff9900; font-weight: bold; }
+H2 { font-size: 13pt; }
+H3 { font-size: 12pt; }
+H4 { font-size: 10pt; color: black; }
+PRE { BACKGROUND-COLOR: #FBEDBB; FONT-FAMILY: "Courier New", Courier, mono; WHITE-SPACE: pre; padding-left: 10px;}
+CODE { COLOR: #990000; FONT-FAMILY: "Courier New", Courier, mono; }
+</style>
+    <link rel="stylesheet" type="text/css" href="http://www.codeproject.com/styles/global.css">
+</head>
+<body bgcolor="#FFFFFF" color="#000000">
+    <!--------------------------------------------------------------------------->
+    <!-------------------------------     STEP 1      --------------------------->
+    <!--  Fill in the details (CodeProject will reformat this section for you) -->
+<pre>
+Title:       Small and reliable HTTP server with complete ASP.NET support
+Author:      Artem Kustikov 
+Email:       kustikoff@tut.by
+Member ID:   2332143
+Language:    C++
+Platform:    Windows, Ubuntu Linux
+Technology:  STL, Boost.Thread, Boost.Python, TinyXML, Managed C++
+Level:       Beginner, Intermediate
+Description: This article describes results of ahttpserver evolution - implementation of ASP.NET handler and many architecture improvements
+Section      C/C++ Language, .NET framework
+SubSection   General
+License:     <a href="http://www.codeproject.com/info/licenses.aspx">CPOL</a>
+</pre>
+    <!-------------------------------     STEP 2      --------------------------->
+    <!--  Include download and sample image information.                       -->
+    <ul class="download">
+        <li><a href="ahttpserver_019_demo.zip">Download ahttpserver with ASP.NET demo (Windows version, .NET 2.0 required) - 523&nbsp;Kb </a>
+            <br />
+                <b>Remarks</b><i>
+                <ol>
+                    <li>To start server go to the server directory and run 'ahttpserver.exe start'.</li>
+                    <li>To see server statistics run 'ahttpserver.exe stat'.</li>
+                    <li>To stop server run 'ahttpserver.exe stop'.</li>
+                </ol></i>
+        </li>
+        <li><a href="ahttpserver_019_src.zip">Download sources (VS.NET 2008 solution/gcc makefile)
+            - XXX&nbsp;Kb</a>
+            <br />
+                <b>Remarks</b> 
+                <i>
+                <ol>
+                    <li>Project created against Boost 1.34.1 - you should have it installed to compile solution.</li>
+                    <li>To compile <b>python_handler</b> you need Python 2.5 installed.</li>
+                    <li>To debug <b>ahttpserver</b> under VS.NET 2008 set <b>ahttpserver->Properties->Debugging->Command Arguments</b>: run.</li>
+                </ol></i>
+         </li>
+    </ul>
+  
+    <!-------------------------------     STEP 3      --------------------------->
+    <!--  Add the article text. Please use simple formatting (<h2>, <p> etc)   -->
+    <h2>Introduction</h2>
+        
+    
+    <p>This article describes changes in <i>ahttp</i> library made from first
+    <a href="http://www.codeproject.com/KB/cpp/ahttpserver.aspx" target="_blank">release</a>. 
+    I have decided to upload new article because server code was greatly modified and 
+    at present it is almost production ready project.</p>
+    
+    <p>After first ahttp version sharing (about year ago) I have continued working on this project, 
+    main goal of this developments stayed unchanged - investigate and use latest features available in C++, 
+    apply different known design practices to create stable and extendable application architecture. This project is developed 
+    at free time and not related to my direct work - in office life mostly I work on web-applications (ASP.NET, JavaScript, jQuery, 
+    last time I participate in project based on ASP.MVC).</p>
+    
+    <p>Currently <i>ahttp</i> project contains three main parts:
+    <ul>
+        <li><code>aconnect</code> static library: contains multithreaded TCP server 
+            implementation, file logger, and great amount of utility functionality - TCP 
+            socket control, string processing algorithms, date/time functions, cryptography;</li>
+        <li><code>ahttplib</code> static library: <code>HttpServer</code> definition 
+        (see details in <a href="http://www.codeproject.com/KB/cpp/ahttpserver.aspx" target="_blank">first article</a>) and 
+        all HTTP requests parsing/processing functionality, server settings loading code;</li>
+        <li><code>ahttpserver</code>: simple HTTP server application.</li>
+    </ul>
+    Server is still support Windows and Linux platforms (tested on Ubuntu only).</p>
+    
+    <p>
+        To extend server features set of plugins was developed:
+    <ul>
+        <li><code>handler_aspnet</code> - ASP.NET application support (available only under Windows). Common architecture of 
+           this plugin was copied from .NET <a href="http://www.ultidev.com/products/Cassini/" target="_blank">Cassini</a> server;</li>
+        <li><code>handler_isapi</code> - IIS ISAPI extensions wrapper - using this wrapper ahttpserver can utilize already developed extensions 
+            to support different script engines. This handler works correctly with PHP 4 and 5, I have tried to use ASP and ASP.NET ISAPI extensions 
+            but both of them uses undocumented features of IIS and cannot be loaded into ahttpserver;</li>
+        <li><code>handler_python</code> - Python scripts support, works differently from general approach to server-side Python - 
+            this module executes scripts directly;</li>
+        <li><code>module_authbasic</code> - Basic authentication support - two types of auth. providers available. Server provider 
+        authenticates users against list loaded from file and system provider (now works only under Windows) authenticates users 
+        against OS.</li>
+    </ul></p>
+    
+    <h2>Using the Code</h2>
+    
+    <h3>Server/library architecture</h3>
+    <p>All HTTP server kernel code is located in <code>ahttp</code> library to make possible embedding of the server into 
+    any existing architecture or use only necessary parts of server code, like HTTP requests parsing. 
+    Using this library provides developer ability to create customizable web-server to process specific HTTP requests - 
+    SOAP requests, files downloading and so on.</p>
+    
+    <p>Complete standalone HTTP server application (<code>ahttpserver</code>) included in project sources has only 
+    about 15 Kb of sources (except libraries code of course). Thus using of this library can greatly decrease 
+    developing/prototyping efforts at server-side project estimation. Even it will not be decided to use this library as
+    service base one can use provided sources parts to include in own project.  
+    </p>
+    
+    <p>To get <code>ahttp::HttpServer</code> working one need have filled <code>HttpServerSettings</code>
+		instance - even for simple server there are many settings that can be setup. As a result 
+		the preferred place to store these settings is a XML file which can be updated by hands and 
+		loaded quickly.
+    </p>
+        
+    <h3>Server settings file</h3>
+    <pre lang="xml">
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;settings&gt;
+    &lt;server
+	    version = "ahttp/0.17"
+	    port="5555"
+	    ip-address="0.0.0.0"
+	    workers-count="50"
+	    pooling-enabled="true"
+	    worker-life-time="60"
+	    command-port="5556"
+	    root="root"
+
+	    keep-alive-enabled = "true"
+	    keep-alive-timeout = "10"
+	    server-socket-timeout = "900"
+	    command-socket-timeout = "30"
+				
+	    response-buffer-size = "8194304"
+	    max-chunk-size = "512144"
+
+	    directory-config-file = "directory.config"
+	    messages-file = "messages.config"
+		
+	    uploads-dir = "c:\\temp\\ahttp"
+	    locale=".1251"
+	    &gt;
+
+
+	    &lt;!-- log-level: "Debug", "Info", "Warning", "Error", "Critical" - if none of them - then debug --&gt;
+	    &lt;log log-level="info" max-file-size="4194304"&gt;
+
+		    &lt;!-- {app-path} - path to directory where application is located (with trailing slash),
+			     {timestamp} - generated timestamp --&gt;
+		    &lt;path&gt;{app-path}log\server_{timestamp}.log&lt;/path&gt;
+	    &lt;/log&gt;
+
+	    &lt;mime-types file="{app-path}mime-types.config" /&gt;
+
+	    &lt;!-- All handlers must be registered there, concrete 
+		    assignments will be defined in &lt;directory&gt; elements --&gt;
+	    &lt;handlers&gt;
+		    &lt;register name="handler_python" default-ext=".py; .pyhtml"&gt;
+			    &lt;path&gt;{app-path}handler_python-d.dll&lt;/path&gt;
+			    &lt;!-- parameter name="uploads-dir"&gt;c:\temp\handler_python\&lt;/parameter --&gt;
+		    &lt;/register&gt;
+		    &lt;register name="handler_php" default-ext=".php"&gt;
+			    &lt;path&gt;{app-path}handler_isapi-d.dll&lt;/path&gt;
+			    &lt;parameter name="engine"&gt;c:\PHP\php5isapi.dll&lt;/parameter&gt;
+			    &lt;parameter name="update-path"&gt;c:\PHP\&lt;/parameter&gt;
+			    &lt;parameter name="free-library"&gt;false&lt;/parameter&gt;
+			    &lt;parameter name="check-file-exists"&gt;true&lt;/parameter&gt;
+		    &lt;/register&gt;
+		    &lt;register name="handler_aspnet" default-ext=".aspx; .ashx; .asmx; .axd"&gt;
+			    &lt;path&gt;{app-path}handler_aspnet-d.dll&lt;/path&gt;
+			    &lt;parameter name="init-root"&gt;false&lt;/parameter&gt;
+			    &lt;!-- parameter name="load-applications"&gt;mvc; books&lt;/parameter --&gt;
+		    &lt;/register&gt;
+	    &lt;/handlers&gt;
+	    
+        &lt;!-- All modules must be registered there, concrete 
+        assignments will be defined in &lt;directory&gt; elements.
+        'global' attribute defines that this module will be automatically applied to root directory.--&gt;
+
+        &lt;modules&gt;
+            &lt;register name="global_basic_auth" global="true"&gt;
+	            &lt;path&gt;{app-path}module_authbasic-d.dll&lt;/path&gt;
+	            &lt;parameter name="realm"&gt;Protected data&lt;/parameter&gt;
+	            &lt;parameter name="provider"&gt;system&lt;/parameter&gt;
+	            &lt;parameter name="default-domain"&gt;ES&lt;/parameter&gt;
+            &lt;/register&gt;
+        &lt;/modules&gt;
+
+
+    &lt;/server&gt;
+
+    &lt;!-- virtual-path for root: "/"
+			    'charset' - will be used when FS content is shown   
+			    default 'max-request-size': 2097152 bytes --&gt;
+    &lt;directory name="root"
+		    browsing-enabled="true"
+		    charset="Windows-1251"
+		    max-request-size="2097152"
+		    enable-parent-path-access="true"&gt;
+
+	    &lt;path&gt;d:\work\web\&lt;/path&gt;
+
+	    &lt;default-documents&gt;
+		    &lt;add&gt;index.html&lt;/add&gt;
+		    &lt;add&gt;index.htm&lt;/add&gt;
+		    &lt;add&gt;main.html&lt;/add&gt;
+            &lt;add&gt;Default.aspx&lt;/add&gt;
+	    &lt;/default-documents&gt;
+
+	    &lt;!-- ext="*" - will be applied to all requests --&gt;
+	    &lt;!-- ext="." - will be applied to directory/file without extension --&gt;
+	    &lt;handlers&gt;
+		    &lt;add name="handler_python"/&gt;
+		    &lt;add name="handler_php" /&gt;
+		    &lt;add name="handler_aspnet"/&gt;
+       &lt;/handlers&gt;
+
+	    &lt;!-- Record attributes: 
+			    {name} - name of item, 
+			    {size} - size of item in kb,
+			    {url} - url to open item
+			    {time} - last modify dat/time of item,
+			    {page-url} - url to current page
+			    {parent-url} - url to parent directory
+			    {files-count} - files count in current directory
+			    {directories-count} - sub-directories count in current directory
+			    {errors-count} - reading errors count 
+			    {tab} - will be replaced with '\t'
+	    --&gt;
+	    	&lt;header-template&gt;
+		&lt;pre&gt;{eol}
+		&lt;b&gt;Directory: &lt;i&gt;{page-url}&lt;/i&gt;&lt;/b&gt;{eol}{eol}
+	&lt;/header-template&gt;
+
+	&lt;parent-directory-template &gt;
+		&lt;a href="{parent-url}"&gt;[parent directory]&lt;/a&gt;{eol}{eol}
+	&lt;/parent-directory-template&gt;
+
+	&lt;directory-template&gt;
+		{time}{tab}{tab}directory{tab}{tab}&lt;a href="{url}"&gt;{name}&lt;/a&gt;{eol}
+    &lt;/directory-template&gt;
+
+	&lt;virtual-directory-template &gt;
+		{time}{tab}{tab}  virtual{tab}{tab}&lt;a href="{url}"&gt;{name}&lt;/a&gt;{eol}
+    &lt;/virtual-directory-template&gt;
+
+	&lt;file-template &gt;
+        {time}{tab}{size}{tab}{tab}&lt;a href="{url}"&gt;{name}&lt;/a&gt;{eol}
+    &lt;/file-template&gt;
+
+	&lt;footer-template&gt;
+        {eol}
+		Files: {files-count}{eol}
+		Directories: {directories-count}{eol}
+		Reading errors: {errors-count}{eol}
+		&lt;/pre&gt;
+	&lt;/footer-template&gt;
+    &lt;/directory&gt;
+
+    &lt;directory name="server_data"
+		    parent="root"&gt;
+	    &lt;virtual-path&gt;server_data&lt;/virtual-path&gt;
+	    &lt;path&gt;{app-path}web&lt;/path&gt;
+    &lt;/directory&gt;
+    
+    &lt;directory name="mvc"
+	       parent="root"&gt;
+	    &lt;handlers&gt;
+		    &lt;add name="handler_aspnet" ext="*"/&gt;
+		    &lt;remove name="handler_aspnet" ext=".gif; .js; .css; .jpg; .png"/&gt;
+	    &lt;/handlers&gt;
+	    &lt;virtual-path&gt;mvc&lt;/virtual-path&gt;
+	    &lt;path&gt;d:\work\Visual Studio 2008\Projects\OReilly-.NET3.5\MVCApplication\&lt;/path&gt;
+    &lt;/directory&gt;
+&lt;/settings&gt;
+    </pre>
+    
+    <p>First section of settings file - <code>server</code> defines HTTP server startup/runtime behavior:
+    server's port (<i>port</i> attribute), IP address to bind on it (now only IPv4 is supported).
+    Other parameters:
+    <dl>
+	    <dt>workers-count</dt>
+	    <dd>Maximal worker threads count in thread's pool.</dd>
+	    <dt>pooling-enabled</dt>
+	    <dd>Defines server working mode - single threaded (<i>pooling-enabled</i> = 'false') or multithreaded.</dd>
+	    
+	    <dt>worker-life-time</dt>
+	    <dd>Worker thread release timeout in seconds.</dd>
+	    <dt>command-port</dt>
+	    <dd>Used in ahttpserver to open additional listening port to receive server control commands ('start', 'stop', 'reload').</dd>
+	    
+	    <dt>keep-alive-enabled</dt>
+	    <dd>Setup HTTP Keep-Alive mode.</dd>
+	    
+	    <dt>server-socket-timeout</dt>
+	    <dd>HTTP server socket read/write timeout (in seconds).</dd>
+	    
+	    <dt>response-buffer-size</dt>
+	    <dd>HTTP response buffer size (in bytes).</dd>
+	    <dt>max-chunk-size</dt>
+	    <dd>Maximal chunk size in chunked response mode (defined in bytes).</dd>
+	    
+	    <dt>directory-config-file</dt>
+	    <dd>Name of inplace file, located in server virtual directory and used to load 
+	    default document list, plugins registration and server URL mappings setup (see sample in sources package).</dd>
+	    
+	    <dt>messages-file</dt>
+	    <dd>Server messages localization file.</dd>
+	    
+	    <dt>uploads-dir</dt>
+	    <dd>Global uploads directory to store posted files content.</dd>
+	    
+	    <dt>locale</dt>
+	    <dd>Important setting - call <code>setlocale (LC_CTYPE, localeStr.c_str())</code> will be performed at
+	    server startup when this attribute is not empty. Locale setup can be used to force <code>mbstowcs</code> work correctly,
+	    for example I have setup ".1251" locale to correctly transform file names defined in Windows-1251 encoding to Unicode.</dd>
+	    	    	    
+	    <dt>log</dt>
+	    <dd>This element defines global file logger setup, well known logging levels set is used.</dd>
+	    	    
+	    <dt>mime-types</dt>
+	    <dd>This element defines correspondence between file extension and MIME type send in 'Content-Type' header for this file.
+	    Types can be defined directly in this element's body or loaded from external file.
+	    </dd>
+	    
+	    <dt>handlers</dt>
+	    <dd>This element should contain all planned to use handlers registration. Each handler registration defines path 
+	    to DLL/SO file to load and set of parameters that will be sent to handler initialization method.
+	    Handler in <code>ahttp</code> library - it is plugin that can perform processing of defined file types, like ISAPI extension in IIS 
+	    or HttpHandler in ASP.NET.
+	    </dd>
+	    
+	    <dt>modules</dt>
+	    <dd>This element should contain all planned to use modules registration. Each module registration defines path 
+	    to DLL/SO file to load and set of parameters that will be sent to module initialization method.
+	    Module in <code>ahttp</code> library - it is plugin that can contain set of callbacks which will be used at defined HTTP request 
+	    processing end-points like HttpModule in ASP.NET. At present following events for module are supported: 
+        ModuleCallbackOnRequestBegin, ModuleCallbackOnRequestResolve, ModuleCallbackOnRequestMapHandler, ModuleCallbackOnResponsePreSendHeaders,
+        ModuleCallbackOnResponsePreSendContent, ModuleCallbackOnResponseEnd.
+	    </dd>
+	</dl></p>
+    
+    <p>Virtual directory setup - <code>directory</code> element.
+    Each virtual directory can be defined by absolute FS path ('path' attribute) or by relative path from parent's directory
+    ('relative-path' attribute).
+    <dl>
+	    <dt>name</dt>
+	    <dd>Mandatory attribute - used to build directories tree from server's root.</dd>
+	    
+	    <dt>path</dt>
+	    <dd>Used to setup virtual directory absolute FS path.</dd>
+	    <dt>relative-path</dt>
+	    <dd>Used to setup virtual directory relative FS path.</dd>
+	    <dt>virtual-path</dt>
+	    <dd>Defines virtual path of directory.</dd>
+	    
+	    <dt>max-request-size</dt>
+	    <dd>Optional attribute - defines maximal HTTP request size that can be processed by server. 
+	        Default value - 2097152 bytes.</dd>
+	        
+	    <dt>enable-parent-path-access</dt>
+	    <dd>Optional attribute - used to deny access to parent directory from <code>mapPath</code> method. 
+	        Default value - 'false'.</dd>
+	     
+	    <dt>browsing-enabled</dt>
+	    <dd>Enables directory browsing mode. "header-template", "parent-directory-template", "directory-template", 
+	    "virtual-directory-template", "file-template" and "footer-template" used to format directory content HTML.
+	    </dd>
+	    
+	    <dt>handlers</dt>
+	    <dd>This element defines ahttp handlers setup for current directory, can contain following elements: 
+	    'add', 'remove', 'clear', 'register'. All handlers registered for parent directory are applied to all children by default.
+	    </dd>
+	</dl></p>        
+        
+    <h4>Complete sample code of very simple server</h4>
+    <pre>
+    
+    // globals
+    namespace Global
+    {
+	    aconnect::string settingsFilePath;
+        ahttp::HttpServerSettings globalSettings;
+	    
+	    aconnect::BackgroundFileLogger logger;
+	    aconnect::Server httpServer;
+    }
+    
+    void processException (aconnect::string_constptr message, int exitCode) {
+	    std::cerr << "Unrecorable error caught: " << message << std::endl;
+	    exit (exitCode);
+    }
+    
+    int main (int argc, char* args[]) 
+    {
+        using namespace aconnect;
+	    namespace fs = boost::filesystem;
+
+        if (argc < 2) {
+            std::cerr << "Usage: " << args[0] <<  " <server-config-file>" << std::endl;
+        }
+        
+        Global::settingsFilePath = args[1];
+	    string appPath = aconnect::util::getAppLocation (args[0]);
+    	
+        try 
+	    {
+		    Global::globalSettings.setAppLocaton ( fs::path(Global::appPath).remove_leaf().directory_string().c_str() );
+		    Global::globalSettings.load ( Global::settingsFilePath.c_str() );
+    		
+	    } catch (std::exception &ex) {
+		    processException (ex.what(), 1);
+	    } catch (...) {
+		    processException ("Unknown exception caught at settings loading", 1);
+	    }
+    	
+	    try 
+	    {
+		    // create global logger
+		    string logFileTemplate = Global::globalSettings.logFileTemplate();
+		    Global::globalSettings.updateAppLocationInPath (logFileTemplate);
+		    fs::path logFilesDir = fs::path (logFileTemplate, fs::native).branch_path();
+		    if (!fs::exists (logFilesDir))
+			    fs::create_directories(logFilesDir);
+
+		    Global::logger.init (Global::globalSettings.logLevel(), logFileTemplate.c_str(), Global::globalSettings.maxLogFileSize());
+
+	    } catch (std::exception &ex) {
+		    processException (ex.what(), 2);
+	    } catch (...) {
+		    processException ("Unknown exception caught at logger creation", 2);
+	    }
+
+	    Global::globalSettings.setLogger ( &Global::logger);
+	    // init ahttp library
+        ahttp::HttpServer::init ( &Global::globalSettings);
+
+	    try 
+	    {
+    	
+		    Global::globalSettings.initPlugins(ahttp::PluginModule);
+		    Global::globalSettings.initPlugins(ahttp::PluginHandler);
+
+		    Global::httpServer.setLog ( &Global::logger);
+		    Global::httpServer.init (Global::globalSettings.port(), 
+			    ahttp::HttpServer::processConnection, 
+			    Global::globalSettings.serverSettings());
+        	
+		    Global::httpServer.start (true);
+
+	    } catch (std::exception &ex) {
+		    processException (ex.what(), 3);
+	    } catch (...) {
+		    processException ("Unknown exception caught at server startup", 3);
+	    }
+    	
+        return 0;
+    }
+    </pre>
+    <p>See more details in library code - I tried to write all code as simple as possible.</p>
+	
+	<h2>Points of Interest</h2>
+	
+    <p>At working on this project I realized that C++ is still the best variant for high-load server-side services.
+    The strongly typed language that provides ability to write short but fast and powerful constructions like this:
+    <pre>
+    template <typename T, typename F> 
+    class ScopedMemberPointerGuard {
+    public:
+        ScopedMemberPointerGuard (T* obj, F T::* member, F initialValue ) : 
+            _obj (obj), _member (member) {
+                _obj->*_member = initialValue;
+        }
+
+        ~ScopedMemberPointerGuard () { 
+            _obj->*_member = 0; 
+        }
+        
+    private:
+        T* _obj;
+        F T::* _member;
+    };
+    </pre>
+    cannot be forgotten by developers. Working on this project I have got great experience in ISAPI extensions 
+    internal architecture, ASP.NET HTTP runtime programming in native environment - all
+    these skills are not trivial programming tasks and can be effectively used in professional work.
+    </p>
+    
+    <h3>Planned Improvements</h3>
+        <b>aconnect</b> library:<br />
+        <ul>
+            <li>UDP server support.</li>
+            <li>TCP/UDP client.</li>
+            <li>Cache class (stores ICacheable&lt;T&gt;) - very challenging task - I am planning to create someting like .NET 
+            Cache on pure C++.</li>
+        </ul>
+        <b>ahttp</b> library and plugins:<br />
+        <ul>
+            <li>Implement CGI/FastCGI handler (like handler_isapi - multiple mappings).</li>
+            <li>Implement found-targets cache in HttpServer (using aconnect::Cache).</li>
+            <li>"gzip/deflate" content encoding support, module (with zlib or boost::iostreams).</li>
+            <li>HTTP client.</li>
+            <li>In-memory cache module for static content.</li>
+            <li>Introduce Django support for Python handler.</li> 
+        </ul>
+    
+    <h3>Known compatibility issues</h3>
+    <ol>
+        <li>Using of c:\PHP\php5isapi.dll through ISAPI handler (tested with PHP 5.2.5 and PHP 4.3.10) can be be the cause of 
+        "Access violation" exception at server stopping (::FreeLibrary call)</li>
+        <li>ASP.NET handler tested only with .NET framework v2.0.50727 (Microsoft .NET Framework 3.5 SP1 installed)</li>
+    </ol>
+                
+   <h2>Version History</h2>
+   
+   <h3>Ver. 0.15</h3>
+    <ul>
+        <li>aconnect: Optimized worker threads pooling mechanism.</li>
+        <li>ahttp: Server messages loading from XML (localization).</li>
+        <li>ahttp: Impelemented handlers unloading mechanism (destroyHandlers).</li>
+        <li>ahttp: Implemented stable mutlithreaded Python handler version.</li>
+        <li>Many code refactorings performed (class members, namespaces, error handling).</li>
+        <li>Windows: Visual Solution solution converted to VS 2008.</li>
+    </ul>
+       
+    <h3>Ver. 0.16</h3>
+    <ul>
+        <li>ahttp: Defined handler ID and process request by correct dll - used in ISAPI handler, can be used in 
+            other handlers which can be linked to several extensions.</li>
+        <li>ahttp: VirtualPath renamed to InitialVirtualPath, MappedVirtualPath to VirtualPath to make them consistent.</li>
+        <li>ahttp: Added using aconnect::string and related types into ahttp namespace.</li>
+        <li>ahttp: [Windows] ISAPI extensions wrapper (handler), tested with PHP ISAPI extension.</li>
+        <li>ahttp: Implemented SERVER VARIABLES collection support in HttpContext.</li>
+        <li>ahttp: Implemented safe handlers unloading (::FreeLibrary/dlclose).</li>
+        <li>aconnect: Implemented ability to start server on defined IP, loaded from config (default value: 0.0.0.0 - INETADDR_ANY).</li>
+    </ul>
+
+    <h3>Ver. 0.17</h3>
+    <ul>
+        <li>aconnect: Implemented background file logger: collect messages to write and write them in background 
+            (avoid locking on file writing).</li>
+        <li>ahttp: Redeveloped handlers registration (<unregister>, <clear> tags added to simplify handlers management), 
+            added ignored extensions list in "*" mode (.js, .gif... - for MVC handlers).</li>
+        <li>ahttp: Impelemented case-insensitive request/response headers save/load (useful for handlers).</li>
+        <li>ahttp: [Windows] Implemented ASP.NET handler (Managed C++).</li>
+        <li>ahttp: Developed multiple extensions mapping for handler in register@ext and in handler@default-ext 
+            (list of ext linked to named handler), now ASP.NET MVC can be setup by following settings in <directory> element:
+	            <pre>
+	            &lt;handlers&gt;
+		            &lt;register name="handler_aspnet" ext="*"/&gt;
+		            &lt;unregister name="handler_aspnet" ext=".gif; .js; .css; .jpg; .png"/&gt;
+	            &lt;/handlers&gt; 
+	            </pre>
+	            </li>
+        <li>ahttp: Added max-request-size setting for directory (deny requests with larger content-length, send 413 HTPP error).</li>
+    </ul>
+
+    <h3>Ver. 0.18</h3>
+    <ul>
+        <li>ahttp: Implemented "If-Modified-Since" header support.</li>
+        <li>ahttp: Added support of "Accept-Ranges" header used to partial content download.</li>
+    </ul>
+
+    <h3>Ver. 0.19</h3>
+    <ul>
+        <li>ahttp: Developed server modules support (like HttpModule in .NET: onRequestBegin, onRequestMapHandler
+            onResponsePreSendHeaders, onResponsePreSendContent, onResponseEnd).</li>
+        <li>ahttp: Basic authentication (module).</li>
+    </ul>
+    <!-------------------------------    That's it!   --------------------------->
+</body>
+</html>

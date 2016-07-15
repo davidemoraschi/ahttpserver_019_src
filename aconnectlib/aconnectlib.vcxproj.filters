@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{e9e473dd-3aaa-40e7-a100-639a66902dea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thirdparty">
+      <UniqueIdentifier>{c4a9fd27-24a6-4416-acc7-dfa3aae7b262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="crypto">
+      <UniqueIdentifier>{ce50deed-b0cf-4e1c-8fb4-8a6bca3d2139}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="aconnect\aconnect.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="aconnect\error.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="aconnect\logger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="aconnect\util.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="aconnect\util.network.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="aconnect\password_file_storage.cpp">
+      <Filter>crypto</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="aconnect\thirdparty\base64.hpp">
+      <Filter>thirdparty</Filter>
+    </ClInclude>
+    <ClInclude Include="aconnect\crypto\crypto_common.hpp">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="aconnect\crypto\hasher.hpp">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="aconnect\crypto\hmac-sha1.hpp">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="aconnect\crypto\password_file_storage.hpp">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="aconnect\crypto\sha1.hpp">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="aconnect\aconnect.hpp" />
+    <ClInclude Include="aconnect\boost_format_safe.hpp" />
+    <ClInclude Include="aconnect\complex_types.hpp" />
+    <ClInclude Include="aconnect\error.hpp" />
+    <ClInclude Include="aconnect\logger.hpp" />
+    <ClInclude Include="aconnect\server_settings.hpp" />
+    <ClInclude Include="aconnect\types.hpp" />
+    <ClInclude Include="aconnect\util.file.hpp" />
+    <ClInclude Include="aconnect\util.hpp" />
+    <ClInclude Include="aconnect\util.network.hpp" />
+    <ClInclude Include="aconnect\util.string.hpp" />
+    <ClInclude Include="aconnect\util.time.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="aconnect\lib_file_begin.inl" />
+    <None Include="readme.txt" />
+  </ItemGroup>
+</Project>

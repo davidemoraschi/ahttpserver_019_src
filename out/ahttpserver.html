@@ -1,0 +1,367 @@
+<!--------------------------------------------------------------------------->
+<!--                           INTRODUCTION                                
+
+ The Code Project article submission template (HTML version)
+
+Using this template will help us post your article sooner. To use, just 
+follow the 3 easy steps below:
+ 
+     1. Fill in the article description details
+     2. Add links to your images and downloads
+     3. Include the main article text
+
+That's all there is to it! All formatting will be done by our submission
+scripts and style sheets. 
+
+-->
+<!--------------------------------------------------------------------------->
+<!--                        IGNORE THIS SECTION                            -->
+<html>
+<head>
+    <title>The Code Project</title>
+    <style>
+BODY, P, TD { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt }
+H2,H3,H4,H5 { color: #ff9900; font-weight: bold; }
+H2 { font-size: 13pt; }
+H3 { font-size: 12pt; }
+H4 { font-size: 10pt; color: black; }
+PRE { BACKGROUND-COLOR: #FBEDBB; FONT-FAMILY: "Courier New", Courier, mono; WHITE-SPACE: pre; padding-left: 10px;}
+CODE { COLOR: #990000; FONT-FAMILY: "Courier New", Courier, mono; }
+</style>
+    <link rel="stylesheet" type="text/css" href="http://www.codeproject.com/styles/global.css">
+</head>
+<body bgcolor="#FFFFFF" color="#000000">
+    <!--------------------------------------------------------------------------->
+    <!-------------------------------     STEP 1      --------------------------->
+    <!--  Fill in the details (CodeProject will reformat this section for you) -->
+<pre>Title:       Power of C++ - developing a portable HTTP server with Python interpreter using Boost, TinyXML
+Author:      Artem Kustikov 
+Email:       kustikoff@tut.by
+Member ID:   2332143
+Language:    C++
+Platform:    Windows, Ubuntu Linux
+Technology:  STL, Boost.Thread, Boost.Python, TinyXML
+Level:       Intermediate
+Description: This article describes portable networking library (ahttp) and small HTTP server - result of modern C++ programming approaches investigation
+Section      C/C++ Language
+SubSection   General
+License:     <a href="http://www.codeproject.com/info/licenses.aspx">CPOL</a>
+</pre>
+    <!-------------------------------     STEP 2      --------------------------->
+    <!--  Include download and sample image information.                       -->
+    <ul class="download">
+        <li><a href="ahttpserver_demo.zip">Download ahttpserver demo (Windows version) - 355&nbsp;Kb </a>
+            <br />
+                <b>Remarks</b> 
+                <i>
+                <ol>
+                    <li>To start server go to the server directory and run 'ahttpserver.exe start'.</li>
+                    <li>To see server statistics run 'ahttpserver.exe stat'.</li>
+                    <li>To stop server run 'ahttpserver.exe stop'.</li>
+                    <li>To play with Python interpreter Python 2.5 should be installed.</li>
+                    <li>To remove Python support - remove all &lt;handlers&gt; tags with content
+                    from 'server.config' file.</li>
+                </ol></i> </li>
+        <li><a href="ahttpserver_src.zip">Download sources (VS.NET 2005 solution/gcc makefile)
+            - 122&nbsp;Kb</a>
+            <br />
+                <b>Remarks</b> 
+                <i>
+                <ol>
+                    <li>Project created against Boost 1.34.1 - you should have it to compile solution.</li>
+                    <li>To compile <b>python_handler</b> you need Python 2.5 installed.</li>
+                    <li>To debug <b>ahttpserver</b> under VS.NET 2005 set 
+                    <b>ahttpserver->Properties->Debugging->Command Arguments</b>: run.</li>
+                </ol></i> </li>
+
+          
+    </ul>
+    <p>
+        <img src="ahttpserver_screen.jpg" border="0" alt="ahttpserver screen - browse folder content"
+            width="581" height="448"></p>
+    <!-------------------------------     STEP 3      --------------------------->
+    <!--  Add the article text. Please use simple formatting (<h2>, <p> etc)   -->
+    <h2>
+        Introduction</h2>
+    <p>
+        First of all&nbsp; - this article is not a presentation of stable application -
+        <strong><em>ahttpserver</em></strong> just is a result of my creative investigation
+        of modern C++ programming approaches. At my current work I cannot satisfy my curiosity
+        and taste for new programming technologies learning and it was root cause of this
+        project starting - I have started it to refresh/extend and fix my C++ skills.</p>
+    <p>
+        HTTP server application was selected as a complex set of functional parts:
+    </p>
+    <ul>
+        <li>TCP sockets + HTTP protocol; </li>
+        <li>parallel HTTP requests processing (multi-threading); </li>
+        <li>easy-to-modify server settings storage (XML, INI files); </li>
+        <li>interaction with server file system; </li>
+        <li>modular architecture (plugins support);</li>
+        <li>server-side scripting support;</li>
+        <li>server application features (service/daemon);</li>
+        <li>errors logging/server control.</li>
+    </ul>
+    <p>
+        Also several targets were selected at project beginning:</p>
+    <ol>
+        <li>Code must be portable (project should be compiled/run at least under Windows and
+            Linux). I have installed Ubuntu Linux 7.10 six months ago and admire it very much.</li>
+        <li>Code should be organized in independent parts which can be reused in other projects.</li>
+        <li>Project code have to be as small as possible (known C++ libraries can be utilized).</li>
+    </ol>
+    <p>
+        At present <strong><em>ahttpserver</em></strong> project contains three main parts:</p>
+    <ul>
+        <li><code>ahttplib</code> static library (<code>aconnect</code> and <code>ahttp</code>
+            namespaces); </li>
+        <li><code>ahttpserver</code> - server application core;</li>
+        <li><code>python_handler</code> - module for server-side Python scripts execution.</li>
+    </ul>
+    <h2>
+        Using the Code</h2>
+    <p>
+        So let's start from simple example of <code>aconnect&nbsp; </code>library in action - following
+        code presents very simple echo server.</p>
+    
+    <pre>    
+    #include "aconnect/aconnect.hpp"
+    #include "aconnect/util.hpp"
+
+    using namespace aconnect;
+
+    // global server instance
+    Server  server;
+
+    void threadProc (const ClientInfo& client) { 
+	    static EndMarkSocketStateCheck check; 
+	    string request = client.getRequest (check); 
+	    request.erase ( request.find(check.endMark()) );
+
+	    string response;
+	    bool stopServer = false;
+    	
+	    if (util::equals (request, "STOP") ) { 
+		    response = "Processed"; 
+		    stopServer = true;
+	    } else { 
+		    response = "Echo: " + request; 
+	    } 
+	    // write response 
+	    client.writeResponse(response); 
+    	
+	    if (stopServer)
+		    exit (0); 
+    } 
+
+    // test it: http://localhost:8888/
+    int main (int argc, char* args[]) 
+    {
+	    Initializer init;
+	    FileLogger logger;
+	    // {timestamp} - will be replaced with generated timestamp (example: 22_05_2008_20_17_35), 
+	    // third parameter - max. size of log file - it will be rotated automatically
+	    logger.init (Log::Debug, "c:\\temp\\server_log_{timestamp}.log", 4194304);
+
+		// init command server
+		ServerSettings settings;
+		settings.socketReadTimeout = 
+			settings.socketWriteTimeout = 300; // sec
+
+	    // init HTTP server
+	    server.setLog ( &logger); 
+	    server.init (8888, threadProc, settings);
+
+	    server.start(); // started in child thread
+	    server.join();
+    }
+
+</pre>
+	
+	<p>
+    <code>Initializer</code> is an RAII-style guard to init OS-depended network functionality - under Windows
+	it calls <i>WSAStartup</i> in constructor and <i>WSACleanup</i> in destructor.<br />
+	
+	<code>Server</code> is a main functional class - it creates TCP server socket, binds it to 
+	selected port (8888 in code) and start listening on this port. Server can be started in background 
+	thread (as in example) or in main execution thread: <code>server.start (true)</code>.<br />
+	At server initialization <code>ServerSettings</code> object is applied to server.
+	</p>
+	<pre>
+// server settings storage - used to setup default server settings
+struct ServerSettings 
+{
+	int	backlog;
+	int	domain;
+	bool	reuseAddr;
+	bool	enablePooling;
+	int	workersCount;
+
+	int	workerLifeTime;			// sec
+	int	socketReadTimeout;		// sec
+	int	socketWriteTimeout;		// sec
+
+	// default settings
+	ServerSettings () : 
+		backlog (SOMAXCONN),	// backlog in listen() call 
+		domain (AF_INET),	// domain for 'socket' function call
+		reuseAddr (false),	// SO_REUSEADDR flag setup on server socket
+		enablePooling (true),	// show whether create worker-threads pool or not
+		workersCount (500),	// maximum worker-threads count
+		workerLifeTime (300),	// thread in pool lifetime
+		socketReadTimeout (60),	// server socket SO_RCVTIMEO timeout
+		socketWriteTimeout (60) // server socket SO_SNDTIMEO timeout
+	{ }
+};
+	</pre>
+	Each accepted TCP connection is processed in background worker thread - portable 
+	<a target="_blank" href="http://www.boost.org/doc/libs/1_34_1/doc/html/thread.html">Boost.Thread</a> library us used.
+	Simple threads pool implemented in <code>aconnect::Server</code> using 
+	<a target="_blank" href="http://www.boost.org/doc/libs/1_34_1/doc/html/thread/reference.html#header.boost.thread.mutex.hpp">boost::mutex</a> and 
+	<a target="_blank" href="http://www.boost.org/doc/libs/1_34_1/doc/html/thread/reference.html#header.boost.thread.condition.hpp">boost::condition</a>.
+	If <i>enablePooling</i> field in server settings is <i>true</i> then when initial TCP interaction is finished worker 
+	thread starts waiting for new request during <code>workerLifeTime</code> time. If no requests found when timeout ends then
+	thread is removed from pool.
+	<p>
+	When server accepted client TCP connection then it fills <code>ClientInfo</code> object with 
+	client related data.
+	</p>
+	<pre>
+struct ClientInfo
+{
+	port_type	port;		// int
+	ip_addr_type	ip;		// unsigned char[4]
+	socket_type	socket;		// OS-depended, under Win32 - SOCKET, Linux - int
+	class Server	*server;
+};
+	</pre>
+	After client information loading execution is transfered to worker thread 
+	(new or borrowed from pool) that executes thread procedure (<i>threadProc</i> in code).
+	<p>
+	<code>FileLogger</code> - <code>aconnect::Logger</code> interface implementation to log messages to files.
+	<code>aconnect::Logger</code> is
+        a simple example of logging functionality developed in log4... manner - it contains
+        set of logging methods: <i>info, warn, error</i> to log message with appropriate level.<br />
+        <code>ConsoleLogger</code> writes messages to <code>std::cout</code> and <code>FileLogger</code> writes messages 
+        to file, <code>FileLogger</code> can rotate files when maximum file size achieved.
+        <code>FileLogger</code> initialization is too simple - just define log level, path to file and
+        maximum size of one log file (default size: 4&nbsp;Mb). 
+    </p>   
+	
+	<h2>
+        ahttp library</h2>
+    <p>
+        <code>aconnect</code> library was developed at first turn - besides Server class it contains set of utility
+        (types definitions, socket control, string comparison, date/time functions).
+        </p>
+    <p>
+        After TCP server implementation <code>ahttp</code> library was developed - this library 
+        contains <code>HttpServer</code> definition and set of HTTP protocol related functionality.
+		To start <code>ahttp::HttpServer</code> one need have filled <code>HttpServerSettings</code>
+		instance (see listening) - even for this simple server there are many settings. As a result 
+		the preferred place to store these settings is a XML file which can be updated by hands and 
+		loaded quickly. See example of settings file in sources <b><i>ahttpserver</i></b> sources
+		(<i>out\server.config</i> file). Some settings are described in this file, the others can be
+		understood from context.
+</p>        
+<pre>class HttpServerSettings
+{
+public:
+
+	HttpServerSettings();
+	~HttpServerSettings();
+
+	void load (aconnect::string_constptr docPath) throw (settings_load_error);
+	...
+	
+protected:
+	aconnect::ServerSettings settings_;
+	aconnect::port_type port_;
+	aconnect::port_type commandPort_;
+	aconnect::string rootDirName_;
+
+	aconnect::string appLocaton_;
+	// logger
+	aconnect::Log::LogLevel logLevel_;
+	aconnect::string logFileTemplate_;
+	size_t maxLogFileSize_;
+
+	bool enableKeepAlive_;
+	int keepAliveTimeout_;
+	int commandSocketTimeout_;
+	size_t responseBufferSize_;
+	size_t maxChunkSize_;
+
+	directories_map directories_;
+	aconnect::str2str_map mimeTypes_;
+
+	aconnect::Logger*	logger_;
+	aconnect::string	serverVersion_;
+
+	global_handlers_map registeredHandlers_;
+	bool				firstLoad_;
+	aconnect::string	directoryConfigFile_;
+};
+</pre>        
+	
+	<p>At present <code>ahttp::HttpServer</code> has following features:
+	</p>
+	<ul>
+		<li>HTTP methods GET/POST/HEAD</li>
+		<li>POST parameters parsing + uploaded files processing ("multipart/form-data" request type)</li>
+		<li>Keep-alive mode</li>
+		<li>"chunked" transfer encoding - support for dynamically created response</li>
+		<li>MIME type evaluation by file extension (<i>out\mime-types.config</i>)</li>
+		<li>Automatic URL mapping - (see sample in <i>out\web\directory.config</i>)</li>
+		<li>Default documents loading (index.html)</li>
+		<li>Directories browsing with customizable UI</li>
+	</ul>
+	<p>
+	Server has modular architecture - new functionality can be added as new handler.
+	Handlers are connected to server by <code>HttpServerSettings</code> - &lt;handlers&gt; section
+	in configuration file. Handlers are applied to file extensions (".py" for example, "." - empty extension) 
+	all to all files from current virtual directory ("*").
+	Each handler has main processing function:
+</p>
+<pre>HANDLER_EXPORT bool processHandlerRequest (ahttp::HttpContext& context);
+</pre>
+	If this function returns <i>true</i> (request completed) - processing of HTTP handler will be stopped 
+	after this function call. In other case - next registered handler will be applied (this mode can be used in 
+	cache/authentication/extended logging modules).
+	 
+	<br />
+	<br />
+	See more details in code - I tried to write all code as simple as possible.
+	
+	<h2>Points of Interest</h2>
+    <p>
+        As a result at time of <strong><em>ahttpserver</em></strong> development I have
+        investigated set of useful libraries which I can use in future in professinal work.
+        Firstly I want to mention <a target="_blank" href="http://www.boost.org/">boost</a> libraries Thread,
+        Filesystem and String Algorithm - each of them is an great thing and contains many
+        useful functionality for everyday programming tasks. Boost Python Library is a the
+        perfect tool to write own <a target="_blank" href="http://www.python.org/">Python</a> modules -
+        the library's use of advanced metaprogramming techniques simplifies its syntax for
+        users, so that wrapping code takes on the look of a kind of declarative interface
+        definition language (IDL).</p>
+    <p>
+        Working on this application is not stoppped yet - there are several uncompleted
+        (planned) tasks:<ul>
+            <li><em>gzip/deflate</em> content encoding support (with zlib or boost::iostreams).</li>
+            <li>Server messages localization.</li>
+            <li>Basic authentication handler.</li>
+            <li>In-memory cache handler.</li>
+            <li>Python interpreter handler redevelopment to avoid crashes at mutlithreaded requests processing (at present there are only several locks in critical places). I have tried
+                several workarounds from Python documentation: PyGILState_Ensure/PyGILState_Release, PyEval_SaveThread...
+                but quick applicable solution has not been found yet. I planned to investigate existing
+                Python modules (<a target="_blank" href="http://www.modwsgi.org">mod_wsgi</a>, <a
+					href="http://pyisapie.sourceforge.net/" target="_blank">PyISAPIe</a>) </li>
+        </ul>
+        <h2>
+            History</h2>
+        <p>
+            <b>2008-05-29</b> Version 0.1 published.
+        </p>
+    <!-------------------------------    That's it!   --------------------------->
+</body>
+</html>

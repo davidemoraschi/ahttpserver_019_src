@@ -1,0 +1,365 @@
+﻿Build started 26/05/2010 10:23:36.
+     1>Project "I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttplib.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\ahttplib.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\\" /I..\aconnectlib /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ahttp\http_context.cpp ahttp\http_request.cpp ahttp\http_response.cpp ahttp\http_response_header.cpp ahttp\http_server.cpp ahttp\http_server_settings.cpp ahttp\http_support.cpp
+         http_support.cpp
+     1>ahttp\http_support.cpp(147): error C2274: 'function-style cast' : illegal as right side of '.' operator
+     1>ahttp\http_support.cpp(152): error C2312: 'boost::filesystem::filesystem_error &' : is caught by 'boost::filesystem::basic_filesystem_error<Path> &' on line 144
+                 with
+                 [
+                     Path=boost::filesystem::path
+                 ]
+     1>ahttp\http_support.cpp(155): error C2274: 'function-style cast' : illegal as right side of '.' operator
+         http_server_settings.cpp
+         Linking to lib file: libboost_thread-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_date_time-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_regex-vc100-mt-gd-1_43.lib
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(90): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(90): error C2079: 'ahttp::PluginRegistrationInfo::extensions' uses undefined class 'std::set'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(91): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(91): error C2079: 'ahttp::PluginRegistrationInfo::excludedExtensions' uses undefined class 'std::set'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(107): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(107): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(108): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(108): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(109): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(109): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(320): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(238): error C2274: 'function-style cast' : illegal as right side of '.' operator
+     1>ahttp\http_server_settings.cpp(242): error C2312: 'boost::filesystem::filesystem_error &' : is caught by 'boost::filesystem::basic_filesystem_error<Path> &' on line 234
+                 with
+                 [
+                     Path=boost::filesystem::path
+                 ]
+     1>ahttp\http_server_settings.cpp(246): error C2274: 'function-style cast' : illegal as right side of '.' operator
+     1>ahttp\http_server_settings.cpp(440): error C2228: left of '.empty' must have class/struct/union
+                 type is 'const int'
+     1>ahttp\http_server_settings.cpp(450): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(450): error C2955: 'std::set' : use of class template requires template argument list
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(450): error C2027: use of undefined type 'std::set'
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(450): error C2065: 'const_iterator' : undeclared identifier
+     1>ahttp\http_server_settings.cpp(450): error C2146: syntax error : missing ';' before identifier 'itExt'
+     1>ahttp\http_server_settings.cpp(450): error C2065: 'itExt' : undeclared identifier
+     1>ahttp\http_server_settings.cpp(452): error C2065: 'itExt' : undeclared identifier
+     1>ahttp\http_server_settings.cpp(452): error C2228: left of '.begin' must have class/struct/union
+                 type is 'const int'
+     1>ahttp\http_server_settings.cpp(453): error C2065: 'itExt' : undeclared identifier
+     1>ahttp\http_server_settings.cpp(453): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>ahttp\http_server_settings.cpp(453): error C2065: 'itExt' : undeclared identifier
+     1>ahttp\http_server_settings.cpp(454): error C2228: left of '.find' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(454): error C2065: 'itExt' : undeclared identifier
+     1>ahttp\http_server_settings.cpp(454): error C2228: left of '.end' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(455): error C2228: left of '.erase' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(455): error C2065: 'itExt' : undeclared identifier
+     1>ahttp\http_server_settings.cpp(458): error C2228: left of '.insert' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(458): error C2228: left of '.begin' must have class/struct/union
+                 type is 'const int'
+     1>ahttp\http_server_settings.cpp(458): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>ahttp\http_server_settings.cpp(470): error C2228: left of '.insert' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(470): error C2228: left of '.begin' must have class/struct/union
+                 type is 'const int'
+     1>ahttp\http_server_settings.cpp(470): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>ahttp\http_server_settings.cpp(1096): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(1096): error C2079: 'extList' uses undefined class 'std::set'
+     1>ahttp\http_server_settings.cpp(1156): error C2027: use of undefined type 'std::set'
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(1156): error C2440: '=' : cannot convert from 'std::set' to 'int'
+                 Source or target has incomplete type
+     1>ahttp\http_server_settings.cpp(1172): error C2228: left of '.insert' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1172): error C2228: left of '.begin' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1172): error C2228: left of '.end' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1175): error C2079: 'extList' uses undefined class 'std::set'
+     1>ahttp\http_server_settings.cpp(1175): error C2027: use of undefined type 'std::set'
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(1175): error C2440: 'initializing' : cannot convert from 'std::set' to 'int'
+                 Source or target has incomplete type
+     1>ahttp\http_server_settings.cpp(1176): error C2228: left of '.insert' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1176): error C2228: left of '.begin' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1176): error C2228: left of '.end' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1194): error C2228: left of '.insert' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1194): error C2228: left of '.begin' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1194): error C2228: left of '.end' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1214): error C2079: 'extList' uses undefined class 'std::set'
+     1>ahttp\http_server_settings.cpp(1214): error C2027: use of undefined type 'std::set'
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(1214): error C2440: 'initializing' : cannot convert from 'std::set' to 'int'
+                 Source or target has incomplete type
+     1>ahttp\http_server_settings.cpp(1215): error C2228: left of '.insert' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1215): error C2228: left of '.begin' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1215): error C2228: left of '.end' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1236): error C2228: left of '.clear' must have class/struct/union
+                 type is 'int'
+     1>ahttp\http_server_settings.cpp(1326): error C2027: use of undefined type 'std::set'
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server_settings.cpp(1326): error C2079: 'ahttp::HttpServerSettings::parseExtensions' uses undefined class 'std::set'
+     1>ahttp\http_server_settings.cpp(1328): error C2079: 'res' uses undefined class 'std::set'
+     1>ahttp\http_server_settings.cpp(1341): error C2228: left of '.insert' must have class/struct/union
+                 type is 'int'
+         http_server.cpp
+         Linking to lib file: libboost_thread-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_date_time-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_filesystem-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_system-vc100-mt-gd-1_43.lib
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(90): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(90): error C2079: 'ahttp::PluginRegistrationInfo::extensions' uses undefined class 'std::set'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(91): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(91): error C2079: 'ahttp::PluginRegistrationInfo::excludedExtensions' uses undefined class 'std::set'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(107): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(107): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(108): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(108): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(109): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(109): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(320): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_server.cpp(774): warning C4244: 'argument' : conversion from 'std::streamsize' to 'const size_t', possible loss of data
+     1>ahttp\http_server.cpp(837): warning C4244: 'argument' : conversion from 'std::streamsize' to 'size_t', possible loss of data
+     1>ahttp\http_server.cpp(916): warning C4244: 'initializing' : conversion from 'const std::streamsize' to 'unsigned int', possible loss of data
+     1>ahttp\http_server.cpp(934): warning C4244: 'argument' : conversion from 'std::streamsize' to 'size_t', possible loss of data
+         http_response_header.cpp
+         Linking to lib file: libboost_thread-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_date_time-vc100-mt-gd-1_43.lib
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xutility(2227): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xutility(2212) : see declaration of 'std::_Copy_impl'
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/algorithm/string/detail/classification.hpp(102) : see reference to function template instantiation '_OutIt std::copy<const char*,char*>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=char *,
+                     _InIt=const char *
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/algorithm/string/classification.hpp(206) : see reference to function template instantiation 'boost::algorithm::detail::is_any_ofF<CharT>::is_any_ofF<boost::iterator_range<IteratorT>>(const RangeT &)' being compiled
+                 with
+                 [
+                     CharT=char,
+                     IteratorT=const char *,
+                     RangeT=boost::iterator_range<const char *>
+                 ]
+                 ahttp\http_response_header.cpp(110) : see reference to function template instantiation 'boost::algorithm::detail::is_any_ofF<CharT> boost::algorithm::is_any_of<const char[3]>(RangeT (&))' being compiled
+                 with
+                 [
+                     CharT=char,
+                     RangeT=const char [3]
+                 ]
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xutility(3051): warning C4996: 'std::_Equal1': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xutility(3036) : see declaration of 'std::_Equal1'
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/range/algorithm/equal.hpp(103) : see reference to function template instantiation 'bool std::equal<RandomAccessTraversalReadableIterator1,RandomAccessTraversalReadableIterator2>(_InIt1,_InIt1,_InIt2)' being compiled
+                 with
+                 [
+                     RandomAccessTraversalReadableIterator1=const char *,
+                     RandomAccessTraversalReadableIterator2=const char *,
+                     _InIt1=const char *,
+                     _InIt2=const char *
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/range/algorithm/equal.hpp(129) : see reference to function template instantiation 'bool boost::range_detail::equal_impl<SinglePassTraversalReadableIterator1,SinglePassTraversalReadableIterator2>(RandomAccessTraversalReadableIterator1,RandomAccessTraversalReadableIterator1,RandomAccessTraversalReadableIterator2,RandomAccessTraversalReadableIterator2,std::random_access_iterator_tag,std::random_access_iterator_tag)' being compiled
+                 with
+                 [
+                     SinglePassTraversalReadableIterator1=const char *,
+                     SinglePassTraversalReadableIterator2=const char *,
+                     RandomAccessTraversalReadableIterator1=const char *,
+                     RandomAccessTraversalReadableIterator2=const char *
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/range/algorithm/equal.hpp(167) : see reference to function template instantiation 'bool boost::range_detail::equal<const char*,const char*>(SinglePassTraversalReadableIterator1,SinglePassTraversalReadableIterator1,SinglePassTraversalReadableIterator2,SinglePassTraversalReadableIterator2)' being compiled
+                 with
+                 [
+                     SinglePassTraversalReadableIterator1=const char *,
+                     SinglePassTraversalReadableIterator2=const char *
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/range/iterator_range_core.hpp(368) : see reference to function template instantiation 'bool boost::range::equal<boost::iterator_range<IteratorT>,boost::iterator_range<IteratorT>>(const SinglePassRange1 &,const SinglePassRange2 &)' being compiled
+                 with
+                 [
+                     IteratorT=const char *,
+                     SinglePassRange1=boost::iterator_range<const char *>,
+                     SinglePassRange2=boost::iterator_range<const char *>
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/algorithm/string/find_iterator.hpp(320) : see reference to function template instantiation 'bool boost::operator ==<const char*,const char*>(const boost::iterator_range<IteratorT> &,const boost::iterator_range<IteratorT> &)' being compiled
+                 with
+                 [
+                     IteratorT=const char *
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/algorithm/string/find_iterator.hpp(314) : while compiling class template member function 'bool boost::algorithm::split_iterator<IteratorT>::equal(const boost::algorithm::split_iterator<IteratorT> &) const'
+                 with
+                 [
+                     IteratorT=input_iterator_type
+                 ]
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xutility(373) : see reference to class template instantiation 'boost::algorithm::split_iterator<IteratorT>' being compiled
+                 with
+                 [
+                     IteratorT=input_iterator_type
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/iterator.hpp(83) : see reference to class template instantiation 'std::iterator_traits<_Iter>' being compiled
+                 with
+                 [
+                     _Iter=find_iterator_type
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/iterator/iterator_categories.hpp(161) : see reference to class template instantiation 'boost::detail::iterator_traits<Iterator>' being compiled
+                 with
+                 [
+                     Iterator=find_iterator_type
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/mpl/eval_if.hpp(41) : see reference to class template instantiation 'boost::iterator_traversal<Iterator>' being compiled
+                 with
+                 [
+                     Iterator=find_iterator_type
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/iterator/iterator_adaptor.hpp(172) : see reference to class template instantiation 'boost::mpl::eval_if<C,F1,F2>' being compiled
+                 with
+                 [
+                     C=boost::is_same<boost::use_default,boost::use_default>,
+                     F1=boost::iterator_traversal<find_iterator_type>,
+                     F2=boost::mpl::identity<boost::use_default>
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/iterator/iterator_adaptor.hpp(208) : see reference to class template instantiation 'boost::detail::ia_dflt_help<T,DefaultNullaryFn>' being compiled
+                 with
+                 [
+                     T=boost::use_default,
+                     DefaultNullaryFn=boost::iterator_traversal<find_iterator_type>
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/iterator/iterator_adaptor.hpp(270) : see reference to class template instantiation 'boost::detail::iterator_adaptor_base<Derived,Base,Value,Traversal,Reference,Difference>' being compiled
+                 with
+                 [
+                     Derived=boost::transform_iterator<copy_range_type,find_iterator_type>,
+                     Base=find_iterator_type,
+                     Value=std::basic_string<char,std::char_traits<char>,std::allocator<char>>,
+                     Traversal=boost::use_default,
+                     Reference=std::basic_string<char,std::char_traits<char>,std::allocator<char>>,
+                     Difference=boost::use_default
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/iterator/transform_iterator.hpp(92) : see reference to class template instantiation 'boost::iterator_adaptor<Derived,Base,Value,Traversal,Reference>' being compiled
+                 with
+                 [
+                     Derived=boost::transform_iterator<copy_range_type,find_iterator_type>,
+                     Base=find_iterator_type,
+                     Value=std::basic_string<char,std::char_traits<char>,std::allocator<char>>,
+                     Traversal=boost::use_default,
+                     Reference=std::basic_string<char,std::char_traits<char>,std::allocator<char>>
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/algorithm/string/iter_find.hpp(168) : see reference to class template instantiation 'boost::transform_iterator<UnaryFunc,Iterator>' being compiled
+                 with
+                 [
+                     UnaryFunc=copy_range_type,
+                     Iterator=find_iterator_type
+                 ]
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/algorithm/string/split.hpp(149) : see reference to function template instantiation 'SequenceSequenceT &boost::algorithm::iter_split<SequenceSequenceT,RangeT,boost::algorithm::detail::token_finderF<PredicateT>>(SequenceSequenceT &,RangeT &,FinderT)' being compiled
+                 with
+                 [
+                     SequenceSequenceT=aconnect::str_vector,
+                     RangeT=aconnect::string_constptr,
+                     PredicateT=boost::algorithm::detail::is_any_ofF<char>,
+                     FinderT=boost::algorithm::detail::token_finderF<boost::algorithm::detail::is_any_ofF<char>>
+                 ]
+                 ahttp\http_response_header.cpp(110) : see reference to function template instantiation 'SequenceSequenceT &boost::algorithm::split<aconnect::str_vector,aconnect::string_constptr,boost::algorithm::detail::is_any_ofF<CharT>>(SequenceSequenceT &,RangeT &,PredicateT,boost::algorithm::token_compress_mode_type)' being compiled
+                 with
+                 [
+                     SequenceSequenceT=aconnect::str_vector,
+                     CharT=char,
+                     RangeT=aconnect::string_constptr,
+                     PredicateT=boost::algorithm::detail::is_any_ofF<char>
+                 ]
+         http_response.cpp
+         Linking to lib file: libboost_filesystem-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_system-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_regex-vc100-mt-gd-1_43.lib
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(90): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(90): error C2079: 'ahttp::PluginRegistrationInfo::extensions' uses undefined class 'std::set'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(91): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(91): error C2079: 'ahttp::PluginRegistrationInfo::excludedExtensions' uses undefined class 'std::set'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(107): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(107): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(108): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(108): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(109): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(109): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(320): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+         http_request.cpp
+         Linking to lib file: libboost_thread-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_date_time-vc100-mt-gd-1_43.lib
+         http_context.cpp
+         Linking to lib file: libboost_thread-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_date_time-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_filesystem-vc100-mt-gd-1_43.lib
+         Linking to lib file: libboost_system-vc100-mt-gd-1_43.lib
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(90): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(90): error C2079: 'ahttp::PluginRegistrationInfo::extensions' uses undefined class 'std::set'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(91): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(91): error C2079: 'ahttp::PluginRegistrationInfo::excludedExtensions' uses undefined class 'std::set'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(107): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(107): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(108): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(108): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(109): error C2228: left of '.find' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(109): error C2228: left of '.end' must have class/struct/union
+                 type is 'const int'
+     1>i:\visual studio 2010\projects\ahttpserver_019_src\ahttplib\ahttp/http_server_settings.hpp(320): error C2976: 'std::set' : too few template arguments
+                 D:\SETUP\boost_1_43_0\boost_1_43_0\boost/detail/container_fwd.hpp(86) : see declaration of 'std::set'
+     1>ahttp\http_context.cpp(571): error C2274: 'function-style cast' : illegal as right side of '.' operator
+     1>ahttp\http_context.cpp(575): error C2312: 'boost::filesystem::filesystem_error &' : is caught by 'boost::filesystem::basic_filesystem_error<Path> &' on line 566
+                 with
+                 [
+                     Path=boost::filesystem::path
+                 ]
+     1>ahttp\http_context.cpp(580): error C2274: 'function-style cast' : illegal as right side of '.' operator
+         Generating Code...
+     1>Done Building Project "I:\Visual Studio 2010\Projects\ahttpserver_019_src\ahttplib\ahttplib.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:56.03

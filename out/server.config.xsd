@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="settings">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="server">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="log">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="path" type="xs:string" />
+									</xs:sequence>
+									<xs:attribute name="log-level" type="xs:string" use="required" />
+									<xs:attribute name="max-file-size" type="xs:unsignedInt" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="mime-types">
+								<xs:complexType>
+									<xs:attribute name="file" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="handlers">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="register">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="path" type="xs:string" />
+												</xs:sequence>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="default-ext" type="xs:string" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							
+							<xs:element name="modules">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="register">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="path" type="xs:string" />
+													<xs:element maxOccurs="unbounded" name="parameter">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:string">
+																	<xs:attribute name="name" type="xs:string" use="required" />
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="name" type="xs:string" use="required" />
+												<xs:attribute name="global" type="xs:boolean" use="required" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="version" type="xs:string" use="required" />
+						<xs:attribute name="port" type="xs:unsignedShort" use="required" />
+						<xs:attribute name="ip-address" type="xs:string" use="required" />
+						<xs:attribute name="workers-count" type="xs:unsignedByte" use="required" />
+						<xs:attribute name="pooling-enabled" type="xs:boolean" use="required" />
+						<xs:attribute name="worker-life-time" type="xs:unsignedByte" use="required" />
+						<xs:attribute name="command-port" type="xs:unsignedShort" use="required" />
+						<xs:attribute name="root" type="xs:string" use="required" />
+						<xs:attribute name="keep-alive-enabled" type="xs:boolean" use="optional" />
+						<xs:attribute name="keep-alive-timeout" type="xs:unsignedInt" use="optional" />
+						<xs:attribute name="server-socket-timeout" type="xs:unsignedInt" use="optional" />
+						<xs:attribute name="command-socket-timeout" type="xs:unsignedInt" use="optional" />
+						<xs:attribute name="response-buffer-size" type="xs:unsignedInt" use="optional" />
+						<xs:attribute name="max-chunk-size" type="xs:unsignedInt" use="optional" />
+						<xs:attribute name="directory-config-file" type="xs:string" use="optional" />
+						<xs:attribute name="messages-file" type="xs:string" use="optional" />
+						<xs:attribute name="uploads-dir" type="xs:string" use="optional" />
+						<xs:attribute name="locale" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element maxOccurs="unbounded" name="directory">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice maxOccurs="unbounded">
+								<xs:element name="virtual-path" type="xs:string" />
+								<xs:element name="path" type="xs:string" />
+								<xs:element name="default-documents">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element maxOccurs="unbounded" name="add" type="xs:string" />
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="handlers">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element minOccurs="0" name="clear" />
+											<xs:element minOccurs="0" name="remove" />
+											<xs:element minOccurs="0" name="add">
+												<xs:complexType>
+													<xs:attribute name="name" type="xs:string" use="required" />
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="modules">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element minOccurs="0" name="clear" />
+											<xs:element minOccurs="0" name="remove" />
+											<xs:element minOccurs="0" name="add">
+												<xs:complexType>
+													<xs:attribute name="name" type="xs:string" use="required" />
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="header-template" type="xs:string" />
+								<xs:element name="parent-directory-template" type="xs:string" />
+								<xs:element name="directory-template" type="xs:string" />
+								<xs:element name="virtual-directory-template" type="xs:string" />
+								<xs:element name="file-template" type="xs:string" />
+								<xs:element name="footer-template" type="xs:string" />
+							</xs:choice>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required" />
+						<xs:attribute name="browsing-enabled" type="xs:boolean" use="optional" />
+						<xs:attribute name="charset" type="xs:string" use="optional" />
+						<xs:attribute name="max-request-size" type="xs:unsignedInt" use="optional" />
+						<xs:attribute name="enable-parent-path-access" type="xs:boolean" use="optional" />
+						<xs:attribute name="parent" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

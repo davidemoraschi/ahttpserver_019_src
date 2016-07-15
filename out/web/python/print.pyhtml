@@ -1,0 +1,4 @@
+# import python_handler
+import sys
+
+print ("<b>print str( dir(sys.stdout) ) </b>:<br/> %s<br/>" % str( dir(sys.stdout) ))

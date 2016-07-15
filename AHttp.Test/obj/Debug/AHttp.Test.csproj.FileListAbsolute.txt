@@ -1,0 +1,6 @@
+I:\Visual Studio 2010\Projects\ahttpserver_019_src\AHttp.Test\bin\Debug\AHttp.Test.dll.config
+I:\Visual Studio 2010\Projects\ahttpserver_019_src\AHttp.Test\bin\Debug\AHttp.Test.dll
+I:\Visual Studio 2010\Projects\ahttpserver_019_src\AHttp.Test\bin\Debug\AHttp.Test.pdb
+I:\Visual Studio 2010\Projects\ahttpserver_019_src\AHttp.Test\obj\Debug\ResolveAssemblyReference.cache
+I:\Visual Studio 2010\Projects\ahttpserver_019_src\AHttp.Test\obj\Debug\AHttp.Test.dll
+I:\Visual Studio 2010\Projects\ahttpserver_019_src\AHttp.Test\obj\Debug\AHttp.Test.pdb

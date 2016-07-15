@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+
+	<!-- timeouts defined in seconds -->
+	<!-- 
+		Default values in code:
+		workers-count="500"
+		pooling-enabled="true"
+		worker-life-time="300"
+
+		keep-alive-timeout = "5"
+		server-socket-timeout = "900"
+		command-socket-timeout = "30" 
+		response-buffer-size = "2048576" bytes
+		
+		{app-path} can be used in 'uploads-dir'
+		-->
+
+	<server
+		version = "ahttp/0.17"
+		port="5555"
+		ip-address="0.0.0.0"
+		workers-count="50"
+		pooling-enabled="true"
+		worker-life-time="60"
+		command-port="5556"
+		root="root"
+
+		keep-alive-enabled = "true"
+		keep-alive-timeout = "10"
+		server-socket-timeout = "900"
+		command-socket-timeout = "30"
+				
+		response-buffer-size = "8194304"
+		max-chunk-size = "512144"
+
+		directory-config-file = "directory.config"
+		messages-file = "messages.config"
+		
+		uploads-dir = "c:\\temp\\ahttp"
+		locale=".1251"
+		>
+
+
+		<!-- log-level: "Debug", "Info", "Warning", "Error", "Critical" - if none of them - then debug -->
+		<log log-level="info" max-file-size="4194304">
+
+			<!-- {app-path} - path to directory where application is located (with trailing slash),
+				 {timestamp} - generated timestamp -->
+			<path>{app-path}log\server_{timestamp}.log</path>
+		</log>
+
+		<mime-types file="{app-path}mime-types.config" />
+
+		<!-- All handlers must be registered there, concrete 
+			assignments will be defined in <directory> elements -->
+		<handlers>
+			<register name="handler_python" default-ext=".py; .pyhtml">
+				<path>{app-path}handler_python-d.dll</path>
+			</register>
+		</handlers>
+
+
+		<!-- All modules must be registered there, concrete 
+			assignments will be defined in <directory> elements.
+			'global' attribute defines that this module will be automatically applied to root directory.-->
+		
+		<modules>
+			<register name="global_basic_auth" global="true">
+				<path>{app-path}module_authbasic-d.dll</path>
+				<parameter name="realm">Protected data</parameter>
+				<parameter name="provider">system</parameter>
+				<parameter name="default-domain">ES</parameter>
+			</register>
+		</modules>
+	</server>
+
+	<!-- virtual-path for root: "/"
+				'charset' - will be used when FS content is shown   
+				default 'max-request-size': 2097152 bytes -->
+	<directory name="root"
+			browsing-enabled="true"
+			charset="Windows-1251"
+			max-request-size="2097152"
+			enable-parent-path-access="true">
+
+		<path>d:\work\web\</path>
+
+		<default-documents>
+			<add>index.html</add>
+			<add>index.htm</add>
+			<add>main.html</add>
+            <add>Default.aspx</add>
+		</default-documents>
+
+		<!-- ext="*" - will be applied to all requests -->
+		<!-- ext="." - will be applied to directory/file without extension -->
+		<handlers>
+			<add name="handler_python"/>
+       </handlers>
+				
+		<!-- Record attributes: 
+				{name} - name of item, 
+				{size} - size of item in kb (min. length of field - 16 symbols, hardcoded),
+				{url} - url to open item
+				{time} - last modify dat/time of item,
+				{page-url} - url to current page
+				{parent-url} - url to parent directory
+				{files-count} - files count in current directory
+				{directories-count} - sub-directories count in current directory
+				{errors-count} - reading errors count 
+				{tab} - will be replaced with "\t"
+				{eol} - will be replaced with "\r\n"
+		-->
+		<header-template>
+			&lt;pre&gt;{eol}
+			&lt;b&gt;Directory: &lt;i&gt;{page-url}&lt;/i&gt;&lt;/b&gt;{eol}{eol}
+		</header-template>
+
+		<parent-directory-template >
+			&lt;a href="{parent-url}"&gt;[parent directory]&lt;/a&gt;{eol}{eol}
+		</parent-directory-template>
+
+		<directory-template>
+			{time}{tab}{tab}directory{tab}{tab}&lt;a href="{url}"&gt;{name}&lt;/a&gt;{eol}
+        </directory-template>
+
+		<virtual-directory-template >
+			{time}{tab}{tab}  virtual{tab}{tab}&lt;a href="{url}"&gt;{name}&lt;/a&gt;{eol}
+        </virtual-directory-template>
+
+		<file-template >
+            {time}{tab}{size}{tab}{tab}&lt;a href="{url}"&gt;{name}&lt;/a&gt;{eol}
+        </file-template>
+
+		<footer-template>
+            {eol}
+			Files: {files-count}{eol}
+			Directories: {directories-count}{eol}
+			Reading errors: {errors-count}{eol}
+			&lt;/pre&gt;
+		</footer-template>
+
+	</directory>
+
+	<directory name="server_data"
+			parent="root">
+		<virtual-path>server_data</virtual-path>
+		<path>{app-path}web</path>
+	</directory>
+ 
+	<directory name="disk_c"
+		parent="root">
+		<handlers>
+			<clear />
+		</handlers>
+
+		<modules>
+			<clear/>
+			<register name="disk_c_auth">
+				<path>{app-path}module_authbasic-d.dll</path>
+				<parameter name="realm">Protected storage</parameter>
+				<parameter name="provider">server</parameter>
+				<parameter name="users-file">{app-path}users.list</parameter>
+				<parameter name="hash-algorithm">sha1</parameter>
+			</register>
+		</modules>
+		
+		<virtual-path>disk_c</virtual-path>
+		<path>c:\</path>
+	</directory>
+
+
+</settings>

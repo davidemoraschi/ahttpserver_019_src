@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ahttp">
+      <UniqueIdentifier>{84a56921-f0df-430d-90d5-2ef307e87a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ahttp\src">
+      <UniqueIdentifier>{3b61f68e-9bcd-4555-b52f-c315c8a6aafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tinyxml">
+      <UniqueIdentifier>{6664ce7a-df3a-4e4b-8837-3480cee31efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{e16a2795-a01f-425c-be54-b22eedb01aa5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ahttp\aconnect_types.hpp">
+      <Filter>ahttp</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttp\http_context.hpp">
+      <Filter>ahttp</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttp\http_request.hpp">
+      <Filter>ahttp</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttp\http_response.hpp">
+      <Filter>ahttp</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttp\http_response_header.hpp">
+      <Filter>ahttp</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttp\http_server.hpp">
+      <Filter>ahttp</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttp\http_server_settings.hpp">
+      <Filter>ahttp</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttp\http_support.hpp">
+      <Filter>ahttp</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinystr.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinyxml.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttp\common\auth_provider.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="ahttplib.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ahttp\http_settings_tags.inl">
+      <Filter>ahttp</Filter>
+    </None>
+    <None Include="ahttp\http_header_read_check.inl">
+      <Filter>ahttp\src</Filter>
+    </None>
+    <None Include="ahttp\http_messages.inl">
+      <Filter>ahttp\src</Filter>
+    </None>
+    <None Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ahttp\http_context.cpp">
+      <Filter>ahttp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ahttp\http_request.cpp">
+      <Filter>ahttp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ahttp\http_response.cpp">
+      <Filter>ahttp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ahttp\http_response_header.cpp">
+      <Filter>ahttp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ahttp\http_server.cpp">
+      <Filter>ahttp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ahttp\http_server_settings.cpp">
+      <Filter>ahttp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ahttp\http_support.cpp">
+      <Filter>ahttp\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinystr.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxml.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

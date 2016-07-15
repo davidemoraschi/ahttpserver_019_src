@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="14f4d46c-6062-441b-a883-6cd57afa47cd" name="upddm0@UPDDM0_DESKTOP 2010-05-26 09:42:24" runUser="upddm0_desktop\upddm0" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Local Test Run" id="f4fc9017-6821-48e4-a29c-78dd6ecbc055">
+    <Description>This is a default test run configuration for a local test run.</Description>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+    <Deployment runDeploymentRoot="upddm0_UPDDM0_DESKTOP 2010-05-26 09_42_24" />
+  </TestSettings>
+  <Times creation="2010-05-26T09:42:24.6859430+02:00" queuing="2010-05-26T09:42:28.2279430+02:00" start="2010-05-26T09:42:28.4169430+02:00" finish="2010-05-26T09:42:33.4599430+02:00" />
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" error="0" failed="1" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" passed="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="SimpleLoadTest" storage="i:\visual studio 2010\projects\ahttpserver_019_src\ahttp.test\bin\debug\ahttp.test.dll" id="7f449644-caf2-9796-a196-494c33e84d67">
+      <Execution id="bcfa5a8b-096a-48f2-b75e-ba52708b3e56" />
+      <TestMethod codeBase="I:/Visual Studio 2010/Projects/ahttpserver_019_src/AHttp.Test/bin/Debug/AHttp.Test.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="AHttp.Test.CommonFunctionality, AHttp.Test, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="SimpleLoadTest" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="7f449644-caf2-9796-a196-494c33e84d67" executionId="bcfa5a8b-096a-48f2-b75e-ba52708b3e56" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="bcfa5a8b-096a-48f2-b75e-ba52708b3e56" testId="7f449644-caf2-9796-a196-494c33e84d67" testName="SimpleLoadTest" computerName="UPDDM0_DESKTOP" duration="00:00:03.5961345" startTime="2010-05-26T09:42:28.5379430+02:00" endTime="2010-05-26T09:42:32.7759430+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bcfa5a8b-096a-48f2-b75e-ba52708b3e56">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.IsTrue failed. Request failed: System.Net.WebException: Unable to connect to the remote server ---&gt; System.Net.Sockets.SocketException: No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión 127.0.0.1:5555
+   at System.Net.Sockets.Socket.DoConnect(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   at System.Net.ServicePoint.ConnectSocketInternal(Boolean connectFailure, Socket s4, Socket s6, Socket&amp; socket, IPAddress&amp; address, ConnectSocketState state, IAsyncResult asyncResult, Int32 timeout, Exception&amp; exception)
+   --- End of inner exception stack trace ---
+   at System.Net.HttpWebRequest.GetResponse()
+   at AHttp.Test.CommonFunctionality.ProcessUrl(Object input) in I:\Visual Studio 2010\Projects\ahttpserver_019_src\AHttp.Test\CommonFunctionality.cs:line 84, url: /</Message>
+          <StackTrace>   at AHttp.Test.CommonFunctionality.SimpleLoadTest() in I:\Visual Studio 2010\Projects\ahttpserver_019_src\AHttp.Test\CommonFunctionality.cs:line 144
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>
